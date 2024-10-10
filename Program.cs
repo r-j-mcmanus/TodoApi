@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 
+var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins"; // The policy name is arbitrary
+
 // specify features of out app
 var builder = WebApplication.CreateBuilder(args);
 // The following highlighted code adds the database context to the dependency 
@@ -17,7 +19,23 @@ builder.Services.AddOpenApiDocument(config =>
     config.Version = "v1";
 });
 
+// we can set up multiple policies so different sites could use different endpoints
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy  =>
+                      {
+                          policy.WithOrigins("http://example.com",
+                                              "http://www.otherExample.com");
+                      });
+});
+
+
 var app = builder.Build();
+app.UseCors(MyAllowSpecificOrigins); // lett all endpoints use this policy
+
+///////////////////////
+
 if (app.Environment.IsDevelopment())
 {
     app.UseOpenApi();
@@ -30,7 +48,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => "Hello World!").RequireCors(MyAllowSpecificOrigins);
 
 app.MapGet("/todoitems", async (TodoDb db) => await db.Todos.Select(x => new TodoDTO(x)).ToListAsync());
 
