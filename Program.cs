@@ -7,7 +7,28 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TodoDb>(opt => opt.UseInMemoryDatabase("ToDoList"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+builder.Services.AddEndpointsApiExplorer(); 
+// Enables the API Explorer, which is a service that provides metadata about the HTTP API. 
+// The API Explorer is used by Swagger to generate the Swagger document.
+builder.Services.AddOpenApiDocument(config =>
+{
+    config.DocumentName = "TodoAPI";
+    config.Title = "TodoAPI v1";
+    config.Version = "v1";
+});
+
 var app = builder.Build();
+if (app.Environment.IsDevelopment())
+{
+    app.UseOpenApi();
+    app.UseSwaggerUi(config =>
+    {
+        config.DocumentTitle = "TodoAPI";
+        config.Path = "/swagger";
+        config.DocumentPath = "/swagger/{documentName}/swagger.json";
+        config.DocExpansion = "list";
+    });
+}
 
 app.MapGet("/", () => "Hello World!");
 
@@ -21,6 +42,7 @@ app.MapGet("/todoitems/{id}", async (int id, TodoDb db) => (
             Results.NotFound()
 ));
 
+// adds a new item to out df
 app.MapPost("/todoitems", async (Todo todo, TodoDb db) =>
 {
     db.Todos.Add(todo);
@@ -29,6 +51,7 @@ app.MapPost("/todoitems", async (Todo todo, TodoDb db) =>
     return Results.Created($"/todoitems/{todo.Id}", todo);
 });
 
+// can only put over items that already exist
 app.MapPut("/todoitems/{id}", async (int id, Todo inputTodo, TodoDb db) =>
 {
     var todo = await db.Todos.FindAsync(id);

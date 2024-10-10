@@ -36,3 +36,17 @@ c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\M
 c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\obj\Debug\net8.0\TodoApi.csproj.AssemblyReference.cache
 c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\obj\Debug\net8.0\TodoApi.csproj.Up2Date
+c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\Namotion.Reflection.dll
+c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\Newtonsoft.Json.dll
+c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\NJsonSchema.dll
+c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\NJsonSchema.Annotations.dll
+c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\NJsonSchema.NewtonsoftJson.dll
+c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\NJsonSchema.Yaml.dll
+c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\NSwag.Annotations.dll
+c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\NSwag.AspNetCore.dll
+c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\NSwag.Core.dll
+c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\NSwag.Core.Yaml.dll
+c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\NSwag.Generation.dll
+c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\NSwag.Generation.AspNetCore.dll
+c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\bin\Debug\net8.0\YamlDotNet.dll
+c:\Users\rmcma\Documents\Programing\Teaching\lesson 7\TodoApi\obj\Debug\net8.0\TodoApi.MvcApplicationPartsAssemblyInfo.cs
