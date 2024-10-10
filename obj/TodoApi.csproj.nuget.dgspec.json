@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rmcma\\Documents\\Programing\\Teaching\\lesson 7\\TodoApi\\TodoApi.csproj": {}
+    "c:\\Users\\rmcma\\Documents\\Programing\\Teaching\\lesson 7\\TodoApi\\TodoApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rmcma\\Documents\\Programing\\Teaching\\lesson 7\\TodoApi\\TodoApi.csproj": {
+    "c:\\Users\\rmcma\\Documents\\Programing\\Teaching\\lesson 7\\TodoApi\\TodoApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rmcma\\Documents\\Programing\\Teaching\\lesson 7\\TodoApi\\TodoApi.csproj",
+        "projectUniqueName": "c:\\Users\\rmcma\\Documents\\Programing\\Teaching\\lesson 7\\TodoApi\\TodoApi.csproj",
         "projectName": "TodoApi",
-        "projectPath": "C:\\Users\\rmcma\\Documents\\Programing\\Teaching\\lesson 7\\TodoApi\\TodoApi.csproj",
+        "projectPath": "c:\\Users\\rmcma\\Documents\\Programing\\Teaching\\lesson 7\\TodoApi\\TodoApi.csproj",
         "packagesPath": "C:\\Users\\rmcma\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rmcma\\Documents\\Programing\\Teaching\\lesson 7\\TodoApi\\obj\\",
+        "outputPath": "c:\\Users\\rmcma\\Documents\\Programing\\Teaching\\lesson 7\\TodoApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
