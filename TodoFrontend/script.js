@@ -1,15 +1,15 @@
-const form = document.querySelector("#todo-form")
-const list = document.querySelector("#todo-list")
+const form = document.querySelector("#todo-form");
+const list = document.querySelector("#todo-list");
 
-let TODOs = []
+let TODOs = [];
 
 if (localStorage["data"] !== null && 
         localStorage["data"] !== undefined) {
-    TODOs = JSON.parse(localStorage["data"])
+    TODOs = JSON.parse(localStorage["data"]);
 }
 
 function buildUI(){
-    let HTML = ``
+    let HTML = ``;
     TODOs.forEach((todo) => {
         HTML += `
             <li id="${todo.id}">
@@ -21,8 +21,8 @@ function buildUI(){
                 </button>
             </li>
         `
-    })
-    list.innerHTML = HTML
+    });
+    list.innerHTML = HTML;
 }
 
 form.addEventListener("submit", (event) =>
@@ -38,11 +38,20 @@ form.addEventListener("submit", (event) =>
         }
     );
 
-    buildUI() // update UI
+    buildUI(); // update UI
 
     localStorage["data"] = JSON.stringify(TODOs);
 
     form.reset(); // puts all input fields back to normal
 });
+
+document.documentElement.addEventListener("click", (event) => {
+    if(event.target.classList.contains("button-complete")) {
+        // remove from todos the list item with the same unique id corresponding to the button
+        TODOs = TODOs.filter((todo) => todo.id !== event.target.parentElement.id);
+        localStorage["data"] = JSON.stringify(TODOs);
+        buildUI(); // update UI
+    }
+})
 
 buildUI() // initial call UI
