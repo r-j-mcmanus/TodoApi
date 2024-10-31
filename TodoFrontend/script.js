@@ -2,6 +2,11 @@ const form = document.querySelector("#todo-form")
 
 let TODOs = []
 
+if (localStorage["data"] !== null && 
+        localStorage["data"] !== undefined) {
+    TODOs = JSON.parse(localStorage["data"])
+}
+
 form.addEventListener("submit", (event) =>
 {
     event.preventDefault(); // strops the browser automatically doing things, this script is wholey responsible
@@ -15,6 +20,7 @@ form.addEventListener("submit", (event) =>
         }
     );
 
+    localStorage["data"] = JSON.stringify(TODOs);
 
     form.reset(); // puts all input fields back to normal
 });
