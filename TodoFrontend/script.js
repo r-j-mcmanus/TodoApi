@@ -1,10 +1,27 @@
 const form = document.querySelector("#todo-form")
+const list = document.querySelector("#todo-list")
 
 let TODOs = []
 
 if (localStorage["data"] !== null && 
         localStorage["data"] !== undefined) {
     TODOs = JSON.parse(localStorage["data"])
+}
+
+function buildUI(){
+    let HTML = ``
+    TODOs.forEach((todo) => {
+        HTML += `
+            <li id="">
+                <span>temp
+                </span>
+                <button class="button-complete">
+                temp
+                </button>
+            </li>
+        `
+    })
+    list.innerHTML = HTML
 }
 
 form.addEventListener("submit", (event) =>
@@ -20,7 +37,11 @@ form.addEventListener("submit", (event) =>
         }
     );
 
+    buildUI() // update UI
+
     localStorage["data"] = JSON.stringify(TODOs);
 
     form.reset(); // puts all input fields back to normal
 });
+
+buildUI() // initial call UI
