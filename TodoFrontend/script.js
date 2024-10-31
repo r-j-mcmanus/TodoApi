@@ -12,11 +12,12 @@ function buildUI(){
     let HTML = ``
     TODOs.forEach((todo) => {
         HTML += `
-            <li id="">
-                <span>temp
+            <li id="${todo.id}">
+                <span> 
+                    ${todo.title}
                 </span>
                 <button class="button-complete">
-                temp
+                    +
                 </button>
             </li>
         `
