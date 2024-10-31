@@ -19,6 +19,7 @@ builder.Services.AddOpenApiDocument(config =>
     config.Version = "v1";
 });
 
+// CORS
 // we can set up multiple policies so different sites could use different endpoints
 builder.Services.AddCors(options =>
 {
@@ -48,53 +49,79 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+///
+
+// add new path in url
+var todoItems = app.MapGroup("/todoitems");
+
 app.MapGet("/", () => "Hello World!").RequireCors(MyAllowSpecificOrigins);
 
-app.MapGet("/todoitems", async (TodoDb db) => await db.Todos.Select(x => new TodoDTO(x)).ToListAsync());
+// use methods not lambdas
+todoItems.MapGet("/", GetAllTodos).RequireCors(MyAllowSpecificOrigins);
+todoItems.MapGet("/complete", GetCompleteTodos).RequireCors(MyAllowSpecificOrigins);
+todoItems.MapGet("/{id}", GetTodo).RequireCors(MyAllowSpecificOrigins);
+todoItems.MapPost("/", CreateTodo).RequireCors(MyAllowSpecificOrigins);
+todoItems.MapPut("/{id}", UpdateTodo).RequireCors(MyAllowSpecificOrigins);
+todoItems.MapDelete("/{id}", DeleteTodo).RequireCors(MyAllowSpecificOrigins);
 
-app.MapGet("/todoitems/complete", async (TodoDb db) => await db.Todos.Select(x => new TodoDTO(x)).Where(t => t.IsComplete).ToListAsync());
+app.Run();
 
-app.MapGet("/todoitems/{id}", async (int id, TodoDb db) => (
-    await db.Todos.FindAsync(id)
-        is Todo todo ? 
-            Results.Ok(new TodoDTO(todo)) : 
-            Results.NotFound()
-));
+// static - The static keyword indicates that the method belongs to the class itself rather than an instance of the class
+// async - The async modifier is used to indicate that the method contains asynchronous operations. This means the method can perform non-blocking tasks, such as accessing a database or performing I/O operations.
+// Task - a Task represents an asynchronous operation that will eventually complete and return a result. The Task<IResult> means that this asynchronous method will eventually return a value of type IResult. It's like a promise that some value will be available in the future after the asynchronous work is done.
+// IResult - IResult is an interface from ASP.NET Core that represents the result of a web request (an HTTP response). 
+static async Task<IResult> GetAllTodos(TodoDb db)
+{
+    return TypedResults.Ok(await db.Todos.ToArrayAsync());
+}
 
-// adds a new item to out df
-app.MapPost("/todoitems", async (Todo todo, TodoDb db) =>
+static async Task<IResult> GetCompleteTodos(TodoDb db)
+{
+    return TypedResults.Ok(await db.Todos.Where(t => t.IsComplete).ToListAsync());
+}
+
+static async Task<IResult> GetTodo(int id, TodoDb db)
+{
+    return await db.Todos.FindAsync(id)
+        is Todo todo
+            ? TypedResults.Ok(todo)
+            : TypedResults.NotFound();
+}
+
+static async Task<IResult> CreateTodo(Todo todo, TodoDb db)
 {
     db.Todos.Add(todo);
     await db.SaveChangesAsync();
 
-    return Results.Created($"/todoitems/{todo.Id}", todo);
-});
+    return TypedResults.Created($"/todoitems/{todo.Id}", todo);
+}
 
-// can only put over items that already exist
-app.MapPut("/todoitems/{id}", async (int id, Todo inputTodo, TodoDb db) =>
+static async Task<IResult> UpdateTodo(int id, Todo inputTodo, TodoDb db)
 {
     var todo = await db.Todos.FindAsync(id);
 
-    if (todo is null) return Results.NotFound();
+    if (todo is null) return TypedResults.NotFound();
 
     todo.Name = inputTodo.Name;
     todo.IsComplete = inputTodo.IsComplete;
 
     await db.SaveChangesAsync();
 
-    return Results.NoContent();
-});
+    return TypedResults.NoContent();
+}
 
-app.MapDelete("/todoitems/{id}", async (int id, TodoDb db) =>
+static async Task<IResult> DeleteTodo(int id, TodoDb db)
 {
     if (await db.Todos.FindAsync(id) is Todo todo)
     {
         db.Todos.Remove(todo);
         await db.SaveChangesAsync();
-        return Results.NoContent();
+        return TypedResults.NoContent();
     }
 
-    return Results.NotFound();
-});
+    return TypedResults.NotFound();
+}
+
+///
 
 app.Run();
