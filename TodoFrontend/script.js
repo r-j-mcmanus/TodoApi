@@ -25,11 +25,21 @@ function buildUI(){
     list.innerHTML = HTML;
 }
 
+async function fetchTodos() {
+    const url = 'http://localhost:5271/todoitems/'
+    const response = await fetch(url, {method: "GET"});
+    if (!response.ok) {
+        throw new Error(`Failed to fetch todos: ${response.statusText}`);
+    }
+    const todos = await response.json();
+    TODOs = todos; // Update the local array with the remote data
+    buildUI(); // Rebuild the UI with the synced data
+}
 
 async function postTodo(todo) {
     
     // URL for the POST request
-    const url = `http://localhost:5271/todoitems`;
+    const url = `http://localhost:5271/todoitems/`;
   
     try {
         console.log("Sending data to server:", JSON.stringify(todo));
@@ -52,9 +62,16 @@ async function postTodo(todo) {
         // Parse the response data (if response is JSON)
         const data = await response.json();
         console.log('Successfully updated on the server:', data);
+        
+        // Fire-and-forget fetch to ensure sync
+        fetchTodos()
     } catch (error) {
         // Handle any errors that occur during the fetch
         console.error('There was an error with the PUT request:', error);
+
+        // Rollback optimistic update if there's an error
+        TODOs = TODOs.filter((t) => t !== todo);
+        buildUI();
     }
 }
 
@@ -67,12 +84,12 @@ form.addEventListener("submit", (event) =>
         name: event.target[0].value,
         isComplete: false,
         ref: self.crypto.randomUUID()  // after generating 1 billion UUIDs every second for approximately 100 years would the probability of creating a single duplicate reach 50%.
-    }
+    };
 
     //add todo and render
     TODOs.push(todo);
 
-    postTodo(todo)
+    postTodo(todo);
 
     buildUI(); // update UI
 
@@ -92,4 +109,11 @@ document.documentElement.addEventListener("click", (event) => {
 })
 
 
+
+
 buildUI() // initial call UI
+try{
+    fetchTodos();
+} catch (error) {
+    console.log(`Failed on initial fetch of todos, ${error}`)
+}
