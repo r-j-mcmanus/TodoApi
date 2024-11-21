@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System;
 
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins"; // The policy name is arbitrary
 
@@ -92,8 +93,10 @@ static async Task<IResult> GetTodo(int id, TodoDb db)
 
 static async Task<IResult> CreateTodo(Todo todo, TodoDb db)
 {
+    // System.Console.WriteLine($"adding to {todo.Id} {todo.Name} todo");
     db.Todos.Add(todo);
     await db.SaveChangesAsync();
+    // System.Console.WriteLine($"added to {todo.Id} {todo.Name} todo");
 
     return TypedResults.Created($"/todoitems/{todo.Id}", todo);
 }

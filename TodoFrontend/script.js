@@ -26,35 +26,38 @@ function buildUI(){
 }
 
 
-function putTodo(todo) {
+async function postTodo(todo) {
     
     // URL for the POST request
     const url = `http://localhost:5271/todoitems`;
   
     try {
-        console.log(JSON.stringify(todo));
+        console.log("Sending data to server:", JSON.stringify(todo));
 
-      // Make the PUT request to the server
-      const response = fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(todo) // Send as JSON payload
-      });
+        // Make the PUT request to the server
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(todo) // Send as JSON payload
+        });
   
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-  
-      // Parse the response data (if response is JSON)
-      const data = response.json();
-      console.log('Successfully updated on the server:', data);
+        if (!response.ok) {
+            console.error('Server response not OK:', response.status, response.statusText);
+            const errorDetails = await response.text(); // Try to capture server error details
+            throw new Error(`HTTP error! Status: ${response.status}. Details: ${errorDetails}`);
+        }
+    
+        // Parse the response data (if response is JSON)
+        const data = await response.json();
+        console.log('Successfully updated on the server:', data);
     } catch (error) {
-      // Handle any errors that occur during the fetch
-      console.error('There was an error with the PUT request:', error);
+        // Handle any errors that occur during the fetch
+        console.error('There was an error with the PUT request:', error);
     }
 }
+
 
 form.addEventListener("submit", (event) =>
 {
@@ -69,7 +72,7 @@ form.addEventListener("submit", (event) =>
     //add todo and render
     TODOs.push(todo);
 
-    putTodo(todo)
+    postTodo(todo)
 
     buildUI(); // update UI
 
@@ -79,8 +82,6 @@ form.addEventListener("submit", (event) =>
 });
 
 
-   
-
 document.documentElement.addEventListener("click", (event) => {
     if(event.target.classList.contains("button-complete")) {
         // remove from todos the list item with the same unique id corresponding to the button
@@ -89,5 +90,6 @@ document.documentElement.addEventListener("click", (event) => {
         buildUI(); // update UI
     }
 })
+
 
 buildUI() // initial call UI
