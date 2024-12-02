@@ -12,9 +12,9 @@ function buildUI(){
     let HTML = ``;
     TODOs.forEach((todo) => {
         HTML += `
-            <li id="${todo.id}">
+            <li id="${todo.Id}">
                 <span> 
-                    ${todo.name}
+                    ${todo.Name}
                 </span>
                 <button class="button-complete">
                     +
@@ -81,8 +81,8 @@ form.addEventListener("submit", (event) =>
     event.preventDefault(); // strops the browser automatically doing things, this script is wholey responsible
 
     let todo = {
-        name: event.target[0].value,
-        isComplete: false,
+        Name: event.target[0].value,
+        IsComplete: false,
         ref: self.crypto.randomUUID()  // after generating 1 billion UUIDs every second for approximately 100 years would the probability of creating a single duplicate reach 50%.
     };
 
@@ -108,8 +108,7 @@ document.documentElement.addEventListener("click", (event) => {
     }
 })
 
-
-
+///////////////////////////////////////////////////////////////
 
 buildUI() // initial call UI
 try{

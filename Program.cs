@@ -7,7 +7,9 @@ var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins"; // The policy name is a
 var builder = WebApplication.CreateBuilder(args);
 // The following highlighted code adds the database context to the dependency 
 // injection (DI) container and enables displaying database-related exceptions:
-builder.Services.AddDbContext<TodoDb>(opt => opt.UseInMemoryDatabase("ToDoList"));
+builder.Services.AddDbContext<TodoDb>(opt => 
+    opt.UseSqlite("Data Source=TodoList.db")
+);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddEndpointsApiExplorer(); 
