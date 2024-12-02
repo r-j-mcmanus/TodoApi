@@ -63,6 +63,8 @@ public static class PasswordHasher
         // fixed-length string, called a hash. This hash is not reversible, meaning you
         // cannot derive the original password from it.
         byte[] hash = SHA256.HashData(textBytes);
+        // SHA256 shouldn't really be used
+        // https://stackoverflow.com/questions/11624372/best-practice-for-hashing-passwords-sha256-or-sha512
         return hash;
     }
 
