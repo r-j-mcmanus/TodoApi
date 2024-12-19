@@ -1,6 +1,9 @@
 using System.Text;
 using System.Security.Cryptography;
+using System.Runtime.CompilerServices;
 
+
+[assembly: InternalsVisibleTo("TodoApi.Test")]
 public static class PasswordHasher
 {
     private static readonly int saltByteLen = 32;
@@ -62,9 +65,10 @@ public static class PasswordHasher
         // Hashing is a one-way cryptographic operation that converts a password into a
         // fixed-length string, called a hash. This hash is not reversible, meaning you
         // cannot derive the original password from it.
-        byte[] hash = SHA256.HashData(textBytes);
+        byte[] hash = SHA256.HashData(saltedBytes);
         // SHA256 shouldn't really be used
         // https://stackoverflow.com/questions/11624372/best-practice-for-hashing-passwords-sha256-or-sha512
+        // Use PBKDF2, BCrypt, or Argon2 for better security than plain SHA-256
         return hash;
     }
 
