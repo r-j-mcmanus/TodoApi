@@ -44,7 +44,7 @@ public static class UserApi
         if (user == null)
         {
             // User not found
-            return TypedResults.NotFound("User not found.");
+            return TypedResults.Unauthorized();
         }
 
         string password = loginReq.Password;
@@ -56,7 +56,7 @@ public static class UserApi
             return TypedResults.Ok();
         }
         else{
-            return TypedResults.Forbid();
+            return TypedResults.Unauthorized();
         }
     }
 }
