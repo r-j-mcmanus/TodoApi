@@ -1,10 +1,9 @@
 const form = document.querySelector("#todo-form");
 
-
 async function postLogin(loginDetails) {
     const url = `http://localhost:5271/login/`;
     try {
-        console.log("Sending data to server:");
+        console.log("Sending data to server:", loginDetails);
 
         // Make the PUT request to the server
         const response = await fetch(url, {
@@ -29,12 +28,11 @@ async function postLogin(loginDetails) {
         console.error('There was an error with postLogin:', error);
     }
 }
-
 
 async function postRegister(loginDetails) {
     const url = `http://localhost:5271/register/`;
     try {
-        console.log("Sending data to server:");
+        console.log("Sending data to server:", loginDetails);
 
         // Make the PUT request to the server
         const response = await fetch(url, {
@@ -60,7 +58,7 @@ async function postRegister(loginDetails) {
     }
 }
 
-function getLogInDetails() {
+function getLogInDetails(form) {
     const nameInput = form.elements["Username"].value;
     const passwordInput = form.elements["Password"].value;
     
@@ -70,31 +68,42 @@ function getLogInDetails() {
     };
 }
 
+function handleRegister(form){
+    let loginDetails = getLogInDetails(form);
+    postRegister(loginDetails);
+}
+
+function handleLogin(form){
+    let loginDetails = getLogInDetails(form);
+    postLogin(loginDetails);
+}
+
 
 // we want a different event listener for each button, add when the dom is made
 document.addEventListener("DOMContentLoaded", () => {
-    //get the elements of the html we want
-    const loginButton = document.getElementById("login-btn");
-    const registerButton = document.getElementById("register-form");
-
-    async function handleRegister(event){
-        let loginDetails = getLogInDetails();
-        await postRegister(loginDetails);
-    }
-
-    async function handleLogin(event){
-        let loginDetails = getLogInDetails();
-        await postLogin(loginDetails);
-    }
 
     //given these elements of the dom, we register event listeners to the buttons and use the form in the callback
+    const loginButton = document.getElementById("login-btn");
+    const registerButton = document.getElementById("register-btn");
+    const form = document.getElementById("login-form");
+
+    console.log(loginButton)
+    console.log(registerButton)
+    console.log(handleLogin)
+    console.log(handleRegister)
+
+    if (!registerButton || !loginButton) {
+        console.error("Login or Register button not found in the DOM.");
+        return;
+    }
+
     loginButton.addEventListener("click", (event) =>{
         event.preventDefault();
-        handleLogin(event);
+        handleLogin(form);
     })
 
     registerButton.addEventListener("click", (event) =>{
         event.preventDefault();
-        handleRegister(event);
+        handleRegister(form);
     })
 })
