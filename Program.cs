@@ -8,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TodoDb>(opt => 
     opt.UseSqlite("Data Source=TodoList.db")
 );
+builder.Services.AddDbContext<UsersDb>(opt => 
+    opt.UseSqlite("Data Source=Users.db")
+);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddEndpointsApiExplorer(); 
@@ -36,7 +39,7 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
-//app.UseCors(CorsPolicies.MyAllowSpecificOrigins); // let all endpoints use this policy
+app.UseCors(CorsPolicies.MyAllowSpecificOrigins);
 
 ///////////////////////
 

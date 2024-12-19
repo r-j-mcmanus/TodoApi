@@ -63,7 +63,7 @@ function getLogInDetails(form) {
     const passwordInput = form.elements["Password"].value;
     
     return {
-        Name: nameInput,
+        UserName: nameInput,
         Password: passwordInput,
     };
 }
