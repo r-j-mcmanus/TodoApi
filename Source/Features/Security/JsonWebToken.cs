@@ -118,11 +118,9 @@ public static class JsonWebToken {
         byte[] tokenSignature  = Hasher.SaltAndHash(unsignedToken, salt);
         string tokenSignature64 = Base64UrlEncode(tokenSignature);
 
-        if (inputSignature == tokenSignature64) {
-            return true;
-        }
-
-        return false;
+        // Use constant-time comparison for security
+        // think mastermind game
+        return ConstantTimeEquals(inputSignature, tokenSignature64);
     } 
 
     private static string Base64UrlEncode(string input)
@@ -139,5 +137,23 @@ public static class JsonWebToken {
                       .Replace("+", "-")
                       .Replace("/", "_")
                       .TrimEnd('=');
+    }
+
+    private static bool ConstantTimeEquals(string input, string toMatch)
+    {
+        /*
+        Ensure that the time taken to check if the input and toMatch are equal is independent of the 
+        length of input or the overlap between correct characters in input and toMatch
+        */
+        int maxLength = Math.Max(input.Length, toMatch.Length);
+        input = input.PadRight(maxLength, '\0');
+        toMatch = toMatch.PadRight(maxLength, '\0');
+
+        bool result = true;
+        for (int i =0; i < input.Length; i++) {
+            result &= input[i] == toMatch[i];
+        }
+
+        return result;
     }
 }
