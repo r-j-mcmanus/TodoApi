@@ -2,23 +2,24 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Todo - Log <Ifr></Ifr>n</title>
-        <link href="styles/login-styles.css" rel="stylesheet"/>    
+        <meta name="viewport" context="width-device-width, initial-scale=1.0">
+        <link href="styles/login-styles.css" rel="stylesheet"/>
     </head>
     <body>
         <header>
-            <h1>TODO</h1>
-            <h2>Log In</h2>
+            <h1>Login</h1>
         </header>
         <form id="login-form" class="login-form">
-            <label>
-                <input type="text" name="Username" placeholder="Username">
-                <input type="password" name="Password" placeholder="Password">
-            </label>
-            <button type="submit" id="login-btn">Log In</button>
-            <button type="submit" id="register-btn">Register</button>
+            <span class="screen-reader-text">Username</span>
+            <input type="text" name="username" placeholder="username">
+            <span class="screen-reader-text">Password</span>
+            <input type="password" name="password" placeholder="password">
+            <div>
+                <button type="submit" id="login-btn">Login</button>
+                <button type="submit" id="register-btn">Register</button>
+            </div>
         </form>
-        <script src="js/login-script.js"></script>
+        <p id="Error"></p>
+        <script src="js/login.js"></script>
     </body>
 </html>
