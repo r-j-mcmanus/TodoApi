@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using DotNetEnv;
 
+Env.Load();
 
 // specify features of out app
 var builder = WebApplication.CreateBuilder(args);

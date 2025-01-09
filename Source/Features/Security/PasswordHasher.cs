@@ -16,9 +16,7 @@ public static class PasswordHasher
             rng.GetBytes(salt);
         }
         
-        byte[] passwordHash = SaltAndHash(password, salt);
-
-        string passwordHashString = Convert.ToBase64String(passwordHash);
+        string passwordHashString = Hasher.SaltAndHashString(password, salt);
         string saltString = Convert.ToBase64String(salt);
         string hashedPasswordAndSalt = passwordHashString + saltString;
 
