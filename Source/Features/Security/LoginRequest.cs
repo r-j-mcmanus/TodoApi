@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using YamlDotNet.Core.Tokens;
 
 
 public static class UserApi
@@ -53,7 +54,8 @@ public static class UserApi
 
 
         if(verified_password){
-            return TypedResults.Ok();
+            string JWT = JsonWebToken.makeToken();
+            return TypedResults.Ok( new {Token = JWT} );
         }
         else{
             return TypedResults.Unauthorized();

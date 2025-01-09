@@ -2,7 +2,7 @@ const form = document.getElementById("login-form");
 const loginBtn = document.getElementById("login-btn");
 const registerBtn = document.getElementById("register-btn");
 
-form.addEventListener('submit', (event) => {
+form.addEventListener('submit', async (event) => {
     event.preventDefault(); // prevents reloading on click
 
     const nameInput = form.elements["username"].value;
@@ -14,17 +14,39 @@ form.addEventListener('submit', (event) => {
     };
 
     if(event.submitter.id == "login-btn"){
-        postRequest(loginObj, 'login');
+        let response = await postRequest(loginObj, 'login');
+        if (!response.ok) {
+            if(response.status == 401) {
+                console.log('Username or password incorrect')
+            }
+            const data = response.json();
+            console.log('unknown error', data)
+        }
+        else{
+            console.log('Successfully logged in!')
+            console.log(await response.json());
+        }
     } 
     else if (event.submitter.id == "register-btn"){
-        postRequest(loginObj, 'register');
+        let response = await postRequest(loginObj, 'register');
+        
+        if (!response.ok) {
+            if(response.status == 409) {
+                console.log('Username already exists')
+            }
+            const data = response.json();
+            console.log('unknown error', data)
+        }
+        else{
+            console.log('Successfully registered!')
+            console.log(await response.json());
+        }
     }
     form.reset(); // remove filled values form the form
 });
 
 async function postRequest(postBody, endpoint) {
     const url = `http://localhost:5271/${endpoint}`
-    
     try {
         const response = await fetch(url, 
             {
@@ -35,17 +57,7 @@ async function postRequest(postBody, endpoint) {
                 }
             }
         );
-
-        if (!response.ok) {
-            if(response.status == 401) {
-                console.log('Username or password incorrect')
-            }
-            throw new Error("Network response was not ok!", response)
-        }
-
-        const data = response.json();
-        console.log('Successfully updated the server', data)
-
+        return response;
     } catch (error) {
         console.log("there was an error", error)
     }

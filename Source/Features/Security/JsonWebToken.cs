@@ -72,7 +72,7 @@ class Body {
 //[assembly: InternalsVisibleTo("TodoApi.Test")]
 public static class JsonWebToken {
 
-    static string makeToken()
+    public static string makeToken()
     {
         
         string? salt = Environment.GetEnvironmentVariable("JWT_SALT");
@@ -98,7 +98,7 @@ public static class JsonWebToken {
         return $"{unsignedToken}.{signature64}";
     } 
 
-    static bool validateToken(string input)
+    public static bool validateToken(string input)
     {
         string? salt = Environment.GetEnvironmentVariable("JWT_SALT");
 
