@@ -26,7 +26,7 @@ form.addEventListener('submit', async (event) => {
         await register(loginObj);
     }
     else if (event.submitter.id == "test-jwt-btn"){
-        let request = await postRequest(localStorage["jwt"], "ValidateJWT");
+        let request = await postRequest(localStorage["jwt"], "ValidateJWT", {"Authorization": `Bearer ${localStorage["jwt"]}`});
         console.log(request)
     }
     form.reset(); // remove filled values form the form
@@ -60,16 +60,16 @@ async function register(loginObj){
     }
 }
 
-async function postRequest(postBody, endpoint) {
+async function postRequest(postBody, endpoint, headers = {}) {
     const url = `http://localhost:5271/${endpoint}`;
+    headers['Content-Type'] = 'application/json'
+
     try {
         const response = await fetch(url, 
             {
                 method: "POST",
                 body: JSON.stringify(postBody),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                headers: headers
             }
         );
         return response;
