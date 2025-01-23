@@ -1,6 +1,4 @@
 const form = document.getElementById("login-form");
-const loginBtn = document.getElementById("login-btn");
-const registerBtn = document.getElementById("register-btn");
 
 form.addEventListener('submit', async (event) => {
     event.preventDefault(); // prevents reloading on click
@@ -19,7 +17,7 @@ form.addEventListener('submit', async (event) => {
             if(response.status == 401) {
                 console.log('Username or password incorrect')
             }
-            const data = response.json();
+            const data = await response.json();
             console.log('unknown error', data)
         }
         else{
