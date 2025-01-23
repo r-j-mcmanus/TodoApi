@@ -1,5 +1,12 @@
 const form = document.getElementById("login-form");
 
+jwt = "";
+
+if (localStorage["jwt"] !== null && 
+    localStorage["jwt"] !== undefined) {
+    jwt = localStorage["jwt"];
+}
+
 form.addEventListener('submit', async (event) => {
     event.preventDefault(); // prevents reloading on click
 
@@ -12,39 +19,49 @@ form.addEventListener('submit', async (event) => {
     };
 
     if(event.submitter.id == "login-btn"){
-        let response = await postRequest(loginObj, 'login');
-        if (!response.ok) {
-            if(response.status == 401) {
-                console.log('Username or password incorrect')
-            }
-            const data = await response.json();
-            console.log('unknown error', data)
-        }
-        else{
-            console.log('Successfully logged in!')
-            console.log(await response.json());
-        }
+        let data = await login(loginObj);
+        localStorage["jwt"] = data['token']
     } 
     else if (event.submitter.id == "register-btn"){
-        let response = await postRequest(loginObj, 'register');
-        
-        if (!response.ok) {
-            if(response.status == 409) {
-                console.log('Username already exists')
-            }
-            const data = response.json();
-            console.log('unknown error', data)
-        }
-        else{
-            console.log('Successfully registered!')
-            console.log(await response.json());
-        }
+        await register(loginObj);
+    }
+    else if (event.submitter.id == "test-jwt-btn"){
+        let request = await postRequest(localStorage["jwt"], "ValidateJWT");
+        console.log(request)
     }
     form.reset(); // remove filled values form the form
 });
 
+async function login(loginObj){
+    let response = await postRequest(loginObj, 'login');
+    if (!response.ok) {
+        if(response.status == 401) {
+            console.log('Username or password incorrect');
+        }
+    }
+    else{
+        console.log('Successfully logged in!');
+        const data = await response.json();
+        return data;
+    }
+}
+
+async function register(loginObj){        
+    let response = await postRequest(loginObj, 'register');    
+    if (!response.ok) {
+        if(response.status == 409) {
+            console.log('Username already exists');
+        }
+    }
+    else{
+        console.log('Successfully registered!');
+        const data = await response.json();
+        return data;
+    }
+}
+
 async function postRequest(postBody, endpoint) {
-    const url = `http://localhost:5271/${endpoint}`
+    const url = `http://localhost:5271/${endpoint}`;
     try {
         const response = await fetch(url, 
             {
@@ -57,6 +74,6 @@ async function postRequest(postBody, endpoint) {
         );
         return response;
     } catch (error) {
-        console.log("there was an error", error)
+        console.log("there was an error", error);
     }
 };

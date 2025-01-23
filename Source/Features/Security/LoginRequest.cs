@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using YamlDotNet.Core.Tokens;
 
 
 public static class UserApi
@@ -8,6 +7,7 @@ public static class UserApi
     {
         endpoints.MapPost("/register/", CreateUser).RequireCors(CorsPolicies.MyAllowSpecificOrigins);
         endpoints.MapPost("/login/", Login).RequireCors(CorsPolicies.MyAllowSpecificOrigins);
+        endpoints.MapPost("/ValidateJWT/", ValidateJWT).RequireCors(CorsPolicies.MyAllowSpecificOrigins);
     }
 
     static async Task<IResult> CreateUser(LoginRequest loginReq, UsersDb db)
@@ -56,6 +56,16 @@ public static class UserApi
         if(verified_password){
             string JWT = JsonWebToken.makeToken();
             return TypedResults.Ok( new {Token = JWT} );
+        }
+        else{
+            return TypedResults.Unauthorized();
+        }
+    }
+
+    static async Task<IResult> ValidateJWT(string jwt)
+    {
+        if(JsonWebToken.validateToken(jwt)){
+            return TypedResults.Ok();
         }
         else{
             return TypedResults.Unauthorized();

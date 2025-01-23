@@ -52,19 +52,19 @@ using Microsoft.AspNetCore.Identity;
 */
 
 class Header {
-    public string alg = "HS256";
-    public string typ = "JWT";
+    public string alg { get; set; } = "HS256";
+    public string typ { get; set; } = "JWT";
 
 };
 
 class Body {
-    public string? iss;
-    public string? sub;
-    public string? aud;
-    public long?  exp;
-    public long? nbf;
-    public long? iat;
-    public string? jti;
+    public string? iss { get; set; }
+    public string? sub { get; set; }
+    public string? aud { get; set; }
+    public long?  exp { get; set; }
+    public long? nbf { get; set; }
+    public long? iat { get; set; }
+    public string? jti { get; set; }
 
 };
 
